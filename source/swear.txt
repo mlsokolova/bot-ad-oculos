@@ -64,14 +64,14 @@ chatterbox|pease-door-ball
 chatterer|pease-door-ball
 hell|your-bunny-wrote
 damn|your-bunny-wrote,
-asshole|more dark
-jackhole|more dark
-moron|more dark
+asshole|more-dark
+jackhole|more-dark
+moron|more-dark
 blockhead|peas-door-ball
 fool|peas-door-ball
 idiot|peas-door-ball
-not important|near bird
-fuck yourself|some more dark
+not important|near-bird
+fuck yourself|some-more-dark
 
 
 
