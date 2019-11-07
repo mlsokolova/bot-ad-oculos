@@ -62,6 +62,7 @@ def go(bot, update):
 
 def ru_swear(bot, update, args):
     #print("args = " + " ".join(args))
+    print(args)
     phrase = "|".join(args).replace(",","|,").replace(".","|.").replace("!","|!").replace("?","|?").replace(":","|:")
     #print phrase
     filename = "swear.txt"
