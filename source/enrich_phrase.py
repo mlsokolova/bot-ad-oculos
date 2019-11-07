@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import division
 import nltk
 import pymorphy2
 import codecs
@@ -30,9 +31,11 @@ main_dict["ADVB"]=dict_ADVB
 main_dict["NOUN"]=dict_NOUN
 main_dict["CONJ"]=dict_CONJ
 
-interjections = [l.rstrip('\n') for l in open("dicts/bunch.txt")]
+interjections = [l.rstrip('\n') for l in codecs.open("dicts/bunch.txt","r","utf-8")]
 
-punc = [".",",",":",";","!","?","...","(",")"]
+punc = [u".",u",",u":",u";",u"!",u"?",u"...",u"(",u")"]
+
+morph = pymorphy2.MorphAnalyzer()
 
 def morph_parse(word):
     parse = morph.parse(word)[0]
@@ -40,13 +43,13 @@ def morph_parse(word):
 
 def get_replaced_words_with_interjections(word_list):
     phrase_size = len(word_list)
-    print(phrase_size)
-    interjection_frequency=round(10*((phrase_size*2)/(phrase_size*7)))
-    print(interjection_frequency)
+    #print(phrase_size)
+    interjection_frequency=int(round(10*((phrase_size*2)/(phrase_size*7))))
+    #print(interjection_frequency)
     positions = list(range(0,phrase_size))
     positions_for_interjection = [random.choice(positions) for i in range(interjection_frequency)]
     result = word_list
-    result.append("")
+    result.append(".")
     for p in positions_for_interjection:
         if result[p+1] not in punc and result[p] not in punc and result[p-1] not in punc: 
             result[p] = result[p] + ',' + random.choice(interjections) + ','
@@ -61,25 +64,25 @@ def get_replaced_words_with_interjections(word_list):
 
 def get_VERB(parsed_verb, replaced_value):
     ret_parsed_verb = morph.parse(replaced_value)[0]
-    print(ret_parsed_verb)
+    #print(ret_parsed_verb)
     #gender = parsed_verb.tag.gender
-    print(parsed_verb)
-    print(replaced_value)
+    #print(parsed_verb)
+    #print(replaced_value)
     tense = parsed_verb.tag.tense
     number = parsed_verb.tag.number
     if tense == "past" and number == "plur":
         ret_parsed_verb = ret_parsed_verb.inflect({"past"}).inflect({"plur"})
-        print(ret_parsed_verb)
+        #print(ret_parsed_verb)
     else: 
-        print(ret_parsed_verb)
+        #print(ret_parsed_verb)
         person = parsed_verb.tag.person
         if (person == "3per" and tense == "past" and number == "sing"):
             gender = parsed_verb.tag.gender
             ret_parsed_verb = ret_parsed_verb.inflect({"3per"}).inflect({"past"}).inflect("sing").inflect({gender})
-            print(ret_parsed_verb)
+            #print(ret_parsed_verb)
         elif (tense=="pres"):
             ret_parsed_verb = ret_parsed_verb.inflect({number}).inflect({person})
-            print(ret_parsed_verb)
+            #print(ret_parsed_verb)
     return ret_parsed_verb
 
 def get_ADJF(parsed_adjf, replaced_value):
@@ -122,7 +125,7 @@ def get_parsed_replased(parsed_word):
     return ret_parsed_word
 
 def get_enrich_phrase(txt):
-    morph = pymorphy2.MorphAnalyzer()
+    #morph = pymorphy2.MorphAnalyzer()
     txt_words = nltk.word_tokenize(txt)
     parsed_words = list(map(lambda x: morph_parse(x), txt_words))
     parsed_replased_words = list(map(lambda x: get_parsed_replased(x), parsed_words))
