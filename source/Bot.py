@@ -9,7 +9,7 @@ from telegram.ext import MessageHandler, Filters
 from telegram.ext import CommandHandler
 from telegram.ext import CommandHandler
 from telegram import ParseMode
-from interjection_insert import interjection_insert
+from enrich_phrase import get_enrich_phrase
 import wikidata as wd
 import args_handler
 
@@ -62,11 +62,11 @@ def go(bot, update):
 
 def ru_swear(bot, update, args):
     #print("args = " + " ".join(args))
-    print(args)
-    phrase = "|".join(args).replace(",","|,").replace(".","|.").replace("!","|!").replace("?","|?").replace(":","|:")
+    #print(args)
+    phrase = " ".join(args)
     #print phrase
-    filename = "swear.txt"
-    enriched_phrase = interjection_insert(phrase,filename)
+    #filename = "swear.txt"
+    enriched_phrase = get_enrich_phrase(phrase)
     update.message.reply_text(ru_swear_rezult_txt.format(username=update.message.from_user.first_name,phrase=enriched_phrase))
     #update.message.reply_text(enriched_phrase)
 
